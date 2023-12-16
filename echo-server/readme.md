@@ -85,3 +85,26 @@ curl -H "X-Test: Hello" http://localhost:18888
 ```
 curl --http1.0 -X post http://localhost:18888/greeting
 ```
+
+## curlでjson送信
+
+--data-ascii, -data, -dオプションは、データをエスケープせず、すでにエスケープされているとみなす
+エスケープしたい場合は,--data-urlencodeオプションを使う
+
+```
+curl -d "{\"hello\": \"world\"}" -H "Content-Type: application/json" http://localhost:18888
+```
+
+## base64
+
+```
+str='%7B%22hello%22%3A%20%22world%22%7D'
+printf '%b\n' "${str//%/\\x}"
+
+{"hello": "world"}
+```
+
+```
+printf '%b\n' "${test//%/\\x}" | base64
+eyJoZWxsbyI6ICJ3b3JsZCJ9Cg==
+```
