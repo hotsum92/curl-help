@@ -64,6 +64,9 @@ User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Geck
 
 ## curlでのurl encode送信
 
+urlencodeされる
+`-X GET -d ...`で強制的にボディにデータを入れることができる
+
 ```
 curl --http1.0 --get --data-urlencode "search word" http://localhost:18888
 ```
@@ -108,3 +111,43 @@ printf '%b\n' "${str//%/\\x}"
 printf '%b\n' "${test//%/\\x}" | base64
 eyJoZWxsbyI6ICJ3b3JsZCJ9Cg==
 ```
+
+## form送信
+
+以下の方法では、&やスペースはそのまま送信されていまう
+```
+curl --http1.0 -d title="The Art of Community" -d author="Jono Bacon" http://localhost:18888
+```
+
+htmlでのform
+
+```
+<form method="POST">
+    <input name="title">
+    <input name="author">
+    <input type="submit">
+</form>
+```
+
+似たような変換では、--data-urlencodeがあるが、こちらはスペースを+ではなく、%20に変換する(RFC3986)
+
+```
+curl --http1.0 --data-urlencode title="Head First PHP & MySQL" --data-urlencode author="Lynn Beighley, Michael Morrison" http://localhost:18888
+```
+
+以下２つを、URLエンコードと呼ばれている
+
+* RFC3986(パーセントエンコード)
+
+```
+title=Head%20First%20PHP%20%26%20MySQL&author=Lynn%20Beighley%2C%20Michael%20Morrison
+```
+
+* RFC1866
+
+```
+title=Head+First+PHP+%26+MySQL&author=Lynn+Beighley%2C+Michael+Morrison
+```
+
+ただし、上記は同じアルゴリズムで変換できるので問題になることはない
+
