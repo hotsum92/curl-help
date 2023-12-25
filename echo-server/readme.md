@@ -151,3 +151,12 @@ title=Head+First+PHP+%26+MySQL&author=Lynn+Beighley%2C+Michael+Morrison
 
 ただし、上記は同じアルゴリズムで変換できるので問題になることはない
 
+## multipart/form-data
+
+マルチーパートフォーム形式でファイルを送信できる
+
+```
+<form action="POST" enctype="multipart/form-data">
+</form>
+```
+
