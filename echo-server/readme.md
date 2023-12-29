@@ -160,3 +160,70 @@ title=Head+First+PHP+%26+MySQL&author=Lynn+Beighley%2C+Michael+Morrison
 </form>
 ```
 
+
+## プロキシ
+
+プロキシとの違いは、GETのあとにスキーマなどの情報が入っている
+
+```
+curl --http1.0 -x http://localhost:18888 -U user:pass http://example.com/helloworld
+```
+
+```
+GET http://example.com/helloworld HTTP/1.0
+Accept: */*
+Proxy-Authorization: Basic dXNlcjpwYXNz
+Proxy-Connection: Keep-Alive
+User-Agent: curl/7.68.0
+```
+
+```
+curl --http1.0 -U user:pass http://localhost:18888/hellowworld
+```
+
+```
+GET /hellowworld HTTP/1.0
+Host: localhost:18888
+Accept: */*
+User-Agent: curl/7.68.0
+```
+
+## cache
+
+[example.com](http://example.com/)にアクセスしたときのキャッシュがある場合のエスポンス
+
+etagと更新日時より
+```
+If-Modified-Since: Thu, 17 Oct 2019 07:18:26 GMT
+If-None-Match: "3147526947+gzip"
+```
+
+304 Not Modifiedが返ってくる
+
+
+```
+HTTP/1.1 304 Not Modified
+Age: 31161
+Cache-Control: max-age=604800
+Date: Fri, 29 Dec 2023 19:05:36 GMT
+Etag: "3147526947+gzip"
+Expires: Fri, 05 Jan 2024 19:05:36 GMT
+Last-Modified: Thu, 17 Oct 2019 07:18:26 GMT
+Server: ECS (sac/2552)
+Vary: Accept-Encoding
+X-Cache: HIT
+```
+
+```
+GET / HTTP/1.1
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+Accept-Encoding: gzip, deflate
+Accept-Language: ja-JP,ja;q=0.9,en-US;q=0.8,en;q=0.7
+Cache-Control: max-age=0
+Connection: keep-alive
+Host: example.com
+If-Modified-Since: Thu, 17 Oct 2019 07:18:26 GMT
+If-None-Match: "3147526947+gzip"
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36
+```
